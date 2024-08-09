@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: tlog
+    
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+    
+
+  profiles:
+    active: local
