@@ -3,13 +3,13 @@ package com.tlog.backend.member.domain;
 import javax.persistence.*;
 
 import com.tlog.backend.global.BaseTimeEntity;
+import com.tlog.backend.global.utils.Encryption;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@ToString
 @Getter
 @NoArgsConstructor
 @Entity
@@ -44,6 +44,11 @@ public class Member extends BaseTimeEntity{
 		 return this.role.getKey();
 	 }
 	 
-	 
+	 public String encPassword() {
+		 Encryption enc = new Encryption();
+		 String salt = enc.getSalt();
+		 this.password = enc.sha256encode(password, salt);
+		 return salt;
+	 }
 	 
 }
