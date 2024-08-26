@@ -16,6 +16,7 @@ import com.tlog.backend.member.domain.Role;
 import com.tlog.backend.member.domain.Salt;
 import com.tlog.backend.member.domain.repository.MemberRepository;
 import com.tlog.backend.member.domain.repository.SaltRepository;
+import com.tlog.backend.member.web.dto.MemberSignUpRequest;
 
 @Import(JpaConfig.class)
 @DataJpaTest
@@ -45,18 +46,54 @@ public class MemberTest {
 				.nickname(nickname)
 				.role(Role.GUEST)
 				.build();
-		Member savedUser = repository.save(member); //member 등록
+		Member savedMember = repository.save(member); //member 등록
 
 		Salt saltEntity = Salt.builder() //해당 멤버의 salt 등록
-				.member(savedUser)
+				.member(savedMember)
 				.salt(salt)
 				.build();
 		
 		Salt savedSalt = saltRepository.save(saltEntity);
 
-		assertThat(savedUser.getId()).isEqualTo(savedSalt.getMember().getId()); //salt가 해당 멤버에 맞게 저장됐는지 확인
-		assertThat(savedUser.getPassword()).isEqualTo(encPass); //암호화된 비밀번호 확인
-		assertThat(encryption.sha256encode(password, savedSalt.getSalt())).isEqualTo(savedUser.getPassword()); //저장된 salt+입력한 비밀번호 = 저장된 암호화 비밀번호
-		assertThat(savedUser.getCreatedDate()).isNotNull();
+		assertThat(savedMember.getId()).isEqualTo(savedSalt.getMember().getId()); //salt가 해당 멤버에 맞게 저장됐는지 확인
+		assertThat(savedMember.getPassword()).isEqualTo(encPass); //암호화된 비밀번호 확인
+		assertThat(encryption.sha256encode(password, savedSalt.getSalt())).isEqualTo(savedMember.getPassword()); //저장된 salt+입력한 비밀번호 = 저장된 암호화 비밀번호
+		assertThat(savedMember.getCreatedDate()).isNotNull();
 	}
+	
+	@Test
+	@DisplayName("Member 엔티티 안에 encPassword 테스트")
+	public void test_member_encpass() {
+		//given
+		String email = "abc@googole.com";
+		String password = "1234";
+		String nickname = "foo";
+		MemberSignUpRequest req = MemberSignUpRequest
+				.builder()
+				.email(email)
+				.nickname(nickname)
+				.password(password)
+				.checkPassword(password)
+				.build();
+		
+		//when
+		Member savedMember = repository.save(req.toEntity());
+		
+		String salt = savedMember.encPassword();
+		Salt saltEntity = Salt.builder()
+				.member(savedMember)
+				.salt(salt)
+				.build();
+		Salt savedSalt = saltRepository.save(saltEntity);
+		
+		//then
+		assertThat(savedMember.getId()).isEqualTo(savedSalt.getMember().getId()); //salt가 해당 멤버에 맞게 저장됐는지 확인
+		//비밀번호 암호화 됐는지 확인
+		assertThat(savedMember.getPassword()).isNotNull();
+		assertThat(savedMember.getPassword()).isNotEqualTo(password);
+		System.out.println(savedMember.getPassword());
+		
+	}
+	
+	
 }
