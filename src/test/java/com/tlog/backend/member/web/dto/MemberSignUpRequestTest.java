@@ -30,7 +30,7 @@ public class MemberSignUpRequestTest {
 		String checkPassword = " ";
 		String nickname = " ";
 		
-		MemberSignUpRequest request = MemberSignUpRequest.builder()
+		MemberSignUpRequest request = MemberSignUpRequest.testDataBuilder()
 				.test_email(email)
 				.test_password(password)
 				.test_checkPassword(checkPassword)
