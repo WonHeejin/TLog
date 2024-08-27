@@ -18,12 +18,12 @@ public class MemberSignUpRequest {
 	@NotBlank(message = "닉네임을 입력해주세요.")
 	private String nickname;
 	
-	@Builder
-	public MemberSignUpRequest(String email, String password, String checkPassword, String nickname) {
-		this.email = email;
-		this.password = password;
-		this.checkPassword = checkPassword;
-		this.nickname = nickname;
+	@Builder //테스트 데이터 생성용 빌더
+	public MemberSignUpRequest(String test_email, String test_password, String test_checkPassword, String test_nickname) {
+		this.email = test_email;
+		this.password = test_password;
+		this.checkPassword = test_checkPassword;
+		this.nickname = test_nickname;
 	}
 	
 }

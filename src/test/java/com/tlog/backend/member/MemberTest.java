@@ -73,10 +73,10 @@ public class MemberTest {
 		String nickname = "foo";
 		MemberSignUpRequest req = MemberSignUpRequest
 				.builder()
-				.email(email)
-				.nickname(nickname)
-				.password(password)
-				.checkPassword(password)
+				.test_email(email)
+				.test_nickname(nickname)
+				.test_password(password)
+				.test_checkPassword(password)
 				.build();
 		
 		//when

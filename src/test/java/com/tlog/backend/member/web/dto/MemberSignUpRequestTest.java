@@ -31,10 +31,10 @@ public class MemberSignUpRequestTest {
 		String nickname = " ";
 		
 		MemberSignUpRequest request = MemberSignUpRequest.builder()
-				.email(email)
-				.password(password)
-				.checkPassword(checkPassword)
-				.nickname(nickname)
+				.test_email(email)
+				.test_password(password)
+				.test_checkPassword(checkPassword)
+				.test_nickname(nickname)
 				.build();
 		 // when
         Set<ConstraintViolation<MemberSignUpRequest>> violations = 

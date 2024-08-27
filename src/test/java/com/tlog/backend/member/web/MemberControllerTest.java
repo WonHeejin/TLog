@@ -52,10 +52,10 @@ public class MemberControllerTest {
 		//가입할 이메일, 비밀번호, 닉네임이 json으로 전달된다.
 		//api 호출 시 전달한 json이 MemberSignUpRequest에 담긴다.
 		MemberSignUpRequest request = MemberSignUpRequest.builder()
-				.email(email)
-				.password(password)
-				.checkPassword(password)
-				.nickname(nickname)
+				.test_email(email)
+				.test_password(password)
+				.test_checkPassword(password)
+				.test_nickname(nickname)
 				.build();
 		
 		String json = mapper.writeValueAsString(request);
@@ -84,10 +84,10 @@ public class MemberControllerTest {
 		String nickname = "foo";
 		
 		MemberSignUpRequest request = MemberSignUpRequest.builder()
-				.email(email)
-				.password(password)
-				.checkPassword(password)
-				.nickname(nickname)
+				.test_email(email)
+				.test_password(password)
+				.test_checkPassword(password)
+				.test_nickname(nickname)
 				.build();
 		
 		String json = mapper.writeValueAsString(request);
@@ -116,10 +116,10 @@ public class MemberControllerTest {
 		String nickname = "foo";
 		
 		MemberSignUpRequest request = MemberSignUpRequest.builder()
-				.email(email)
-				.password(password)
-				.checkPassword(checkPassword)
-				.nickname(nickname)
+				.test_email(email)
+				.test_password(password)
+				.test_checkPassword(checkPassword)
+				.test_nickname(nickname)
 				.build();
 		
 		String json = mapper.writeValueAsString(request);
