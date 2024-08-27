@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import com.tlog.backend.global.config.JpaConfig;
 import com.tlog.backend.global.utils.Encryption;
@@ -18,6 +20,7 @@ import com.tlog.backend.member.domain.repository.MemberRepository;
 import com.tlog.backend.member.domain.repository.SaltRepository;
 import com.tlog.backend.member.web.dto.MemberSignUpRequest;
 
+@ActiveProfiles("test")
 @Import(JpaConfig.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
