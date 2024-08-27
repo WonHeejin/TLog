@@ -2,9 +2,6 @@ package com.tlog.backend.member.web.dto;
 
 import javax.validation.constraints.NotBlank;
 
-import com.tlog.backend.member.domain.Member;
-import com.tlog.backend.member.domain.Role;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,12 +26,4 @@ public class MemberSignUpRequest {
 		this.nickname = nickname;
 	}
 	
-	public Member toEntity() {
-		return Member.builder()
-				.email(email)
-				.nickname(nickname)
-				.password(password)
-				.role(Role.GUEST)
-				.build();
-	}
 }

@@ -77,7 +77,13 @@ public class MemberTest {
 				.build();
 		
 		//when
-		Member savedMember = repository.save(req.toEntity());
+		Member entity = Member.builder()
+				.email(req.getEmail())
+				.password(req.getPassword())
+				.nickname(req.getNickname())
+				.role(Role.GUEST)
+				.build();
+		Member savedMember = repository.save(entity);
 		
 		String salt = savedMember.encPassword();
 		Salt saltEntity = Salt.builder()

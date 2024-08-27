@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tlog.backend.global.exception.AuthException;
 import com.tlog.backend.global.exception.ExceptionCode;
 import com.tlog.backend.member.domain.Member;
+import com.tlog.backend.member.domain.Role;
 import com.tlog.backend.member.domain.Salt;
 import com.tlog.backend.member.domain.repository.MemberRepository;
 import com.tlog.backend.member.domain.repository.SaltRepository;
@@ -34,7 +35,14 @@ public class MemberService {
 		}
 		
 		//회원 정보 저장
-		Member savedMember = repository.save(request.toEntity());
+		Member entity = Member.builder()
+				.email(request.getEmail())
+				.password(request.getPassword())
+				.nickname(request.getNickname())
+				.role(Role.GUEST)
+				.build();
+		
+		Member savedMember = repository.save(entity);
 		//비밀번호 암호화
 		String salt = savedMember.encPassword();
 		//암호화 정보 저장
