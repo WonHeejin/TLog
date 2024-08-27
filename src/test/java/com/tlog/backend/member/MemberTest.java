@@ -72,7 +72,7 @@ public class MemberTest {
 		String password = "1234";
 		String nickname = "foo";
 		MemberSignUpRequest req = MemberSignUpRequest
-				.builder()
+				.testDataBuilder()
 				.test_email(email)
 				.test_nickname(nickname)
 				.test_password(password)

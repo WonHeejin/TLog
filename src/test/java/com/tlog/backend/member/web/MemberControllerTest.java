@@ -51,7 +51,7 @@ public class MemberControllerTest {
 		
 		//가입할 이메일, 비밀번호, 닉네임이 json으로 전달된다.
 		//api 호출 시 전달한 json이 MemberSignUpRequest에 담긴다.
-		MemberSignUpRequest request = MemberSignUpRequest.builder()
+		MemberSignUpRequest request = MemberSignUpRequest.testDataBuilder()
 				.test_email(email)
 				.test_password(password)
 				.test_checkPassword(password)
@@ -83,7 +83,7 @@ public class MemberControllerTest {
 		String password = "1234";
 		String nickname = "foo";
 		
-		MemberSignUpRequest request = MemberSignUpRequest.builder()
+		MemberSignUpRequest request = MemberSignUpRequest.testDataBuilder()
 				.test_email(email)
 				.test_password(password)
 				.test_checkPassword(password)
@@ -115,7 +115,8 @@ public class MemberControllerTest {
 		String checkPassword = "2345";
 		String nickname = "foo";
 		
-		MemberSignUpRequest request = MemberSignUpRequest.builder()
+		MemberSignUpRequest request = MemberSignUpRequest
+				.testDataBuilder()
 				.test_email(email)
 				.test_password(password)
 				.test_checkPassword(checkPassword)
