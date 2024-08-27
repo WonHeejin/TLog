@@ -18,7 +18,7 @@ public class MemberSignUpRequest {
 	@NotBlank(message = "닉네임을 입력해주세요.")
 	private String nickname;
 	
-	@Builder //테스트 데이터 생성용 빌더
+	@Builder(builderMethodName = "testDataBuilder") //테스트 데이터 생성용 빌더
 	public MemberSignUpRequest(String test_email, String test_password, String test_checkPassword, String test_nickname) {
 		this.email = test_email;
 		this.password = test_password;
