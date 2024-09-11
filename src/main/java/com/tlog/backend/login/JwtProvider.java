@@ -64,7 +64,7 @@ public class JwtProvider {
 		} catch (final ExpiredJwtException e) {
             throw new ExpiredPeriodJwtException(ExceptionCode.EXPIRED_PERIOD_ACCESS_TOKEN);
         } catch (final MalformedJwtException | IllegalArgumentException e) {
-            throw new InvalidJwtException(ExceptionCode.EXPIRED_PERIOD_ACCESS_TOKEN);
+            throw new InvalidJwtException(ExceptionCode.INVALID_ACCESS_TOKEN);
         }
 	}
 	
