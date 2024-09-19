@@ -1,7 +1,5 @@
 package com.tlog.backend.login.service;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.stereotype.Service;
 
 import com.tlog.backend.global.exception.AuthException;
@@ -50,6 +48,17 @@ public class LoginService {
 		
 		//토큰 전달
 		return tokens;
+	}
+	
+	public void deleteRefreshToken(String refreshToken) {
+		//토큰 유효성 검증
+		jwtProvider.validateTokens(refreshToken);
+		//회원 id 추출
+		Long memberId = jwtProvider.getMemberId(refreshToken);
+		//entity 생성
+		RefreshToken entity = new RefreshToken(refreshToken, memberId);
+		//토큰 삭제
+		refreshTokenRepository.delete(entity);
 	}
 
 }

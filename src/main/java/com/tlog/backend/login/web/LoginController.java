@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,5 +44,21 @@ public class LoginController {
 		response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(new LoginResponse(tokens.getAccessToken()));
+	}
+	
+	@PostMapping("/logout")
+	public ResponseEntity<Void> logout(@CookieValue("refresh-token") String refreshToken) {
+		//DB에 저장된 리프레시토큰 삭제
+		loginService.deleteRefreshToken(refreshToken);
+		//쿠키에 담았던 리프레시토큰 삭제
+		final ResponseCookie cookie = ResponseCookie.from("refresh-token", null)
+                .maxAge(COOKIE_MAX_AGE)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .build();
+		
+		return ResponseEntity.noContent().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
 	}
 }
