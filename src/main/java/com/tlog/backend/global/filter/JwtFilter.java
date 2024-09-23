@@ -44,6 +44,7 @@ public class JwtFilter extends OncePerRequestFilter{
 			throw new InvalidJwtException(ExceptionCode.INVALID_ACCESS_TOKEN);
 		} else {
 			String accessToken = jwtHeader.replace(TOKEN_PREFIX, "");
+			jwtProvider.getMemberId(accessToken);
 			jwtProvider.validateTokens(accessToken);
 			
 			filterChain.doFilter(request, response);

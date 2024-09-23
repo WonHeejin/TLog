@@ -58,6 +58,10 @@ public class JwtProvider {
 				.compact();
 	}
 	
+	public String regenerateAccessToken(Long memberId) {
+		return createToken(memberId, accessExpirationTime);
+	}
+	
 	public void validateTokens(final String token) {
 		try {
 			parseToken(token);
@@ -67,6 +71,17 @@ public class JwtProvider {
             throw new InvalidJwtException(ExceptionCode.INVALID_ACCESS_TOKEN);
         }
 	}
+	
+	public void validateRefreshTokens(final String token) {
+		try {
+			parseToken(token);
+		} catch (final ExpiredJwtException e) {
+			throw new ExpiredPeriodJwtException(ExceptionCode.EXPIRED_PERIOD_REFRESH_TOKEN);
+		} catch (final MalformedJwtException | IllegalArgumentException e) {
+			throw new InvalidJwtException(ExceptionCode.INVALID_REFRESH_TOKEN);
+		}
+	}
+	
 	
 	private Jws<Claims> parseToken(final String token) {
 		return Jwts.parser()

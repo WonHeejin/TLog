@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tlog.backend.login.domain.MemberToken;
@@ -60,5 +62,16 @@ public class LoginController {
                 .build();
 		
 		return ResponseEntity.noContent().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
+	}
+	
+	@PostMapping("/token/{memberId}")
+	public ResponseEntity<LoginResponse> extendLogin(
+			@CookieValue("refresh-token") String refreshToken,
+			@RequestHeader("Authentication") String jwtHeader,
+			@PathVariable Long memberId) {
+		
+		MemberToken tokens = loginService.regenerateToken(memberId, refreshToken);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new LoginResponse(tokens.getAccessToken()));
+		
 	}
 }

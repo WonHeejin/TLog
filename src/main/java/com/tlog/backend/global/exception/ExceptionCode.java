@@ -15,8 +15,10 @@ public enum ExceptionCode {
 	
 	
 	INVALID_ACCESS_TOKEN(2001, "유효하지 않은 토큰입니다."),
-	EXPIRED_PERIOD_ACCESS_TOKEN(2002, "토큰이 만료되었습니다.");
-	
+	EXPIRED_PERIOD_ACCESS_TOKEN(2002, "토큰이 만료되었습니다."),
+	INVALID_REFRESH_TOKEN(2003, "유효하지 않은 토큰입니다."),
+	EXPIRED_PERIOD_REFRESH_TOKEN(2004, "리프레시 토큰이 만료되었습니다. 다시 로그인해주세요."),
+	NOT_MATCHING_TOKEN(2005, "유효하지 않은 토큰입니다.");
 	private final int code;
 	private final String message;
 }

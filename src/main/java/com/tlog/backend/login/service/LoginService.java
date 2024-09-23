@@ -52,7 +52,7 @@ public class LoginService {
 	
 	public void deleteRefreshToken(String refreshToken) {
 		//토큰 유효성 검증
-		jwtProvider.validateTokens(refreshToken);
+		jwtProvider.validateRefreshTokens(refreshToken);
 		//회원 id 추출
 		Long memberId = jwtProvider.getMemberId(refreshToken);
 		//entity 생성
@@ -60,5 +60,24 @@ public class LoginService {
 		//토큰 삭제
 		refreshTokenRepository.delete(entity);
 	}
+	
+	public MemberToken regenerateToken(Long memberId, String refreshToken) {
+		String dbRefreshToken, newAccessToken;
+		//refresh token 유효성 검증
+		jwtProvider.validateRefreshTokens(refreshToken);
+		
+		//refresh token db 조회 -> null이거나 일치하지 않으면 not matching token(유효하지 않은 토큰) exception
+		dbRefreshToken = refreshTokenRepository.findByMemberId(memberId).orElseThrow(() -> new AuthException(ExceptionCode.NOT_MATCHING_TOKEN)).getToken();
+		if(!refreshToken.equals(dbRefreshToken)) {
+			throw new AuthException(ExceptionCode.NOT_MATCHING_TOKEN);
+		}
+		
+		//access token 재발급
+		newAccessToken = jwtProvider.regenerateAccessToken(memberId);
+		
+		return new MemberToken(newAccessToken, refreshToken);
+	}
+	
+	
 
 }
