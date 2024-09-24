@@ -70,7 +70,7 @@ public class LoginController {
 			@RequestHeader("Authentication") String jwtHeader,
 			@PathVariable Long memberId) {
 		
-		MemberToken tokens = loginService.regenerateToken(memberId, refreshToken);
+		MemberToken tokens = loginService.regenerateToken(memberId, refreshToken, jwtHeader);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new LoginResponse(tokens.getAccessToken()));
 		
 	}

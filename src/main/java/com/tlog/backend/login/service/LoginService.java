@@ -61,8 +61,9 @@ public class LoginService {
 		refreshTokenRepository.delete(entity);
 	}
 	
-	public MemberToken regenerateToken(Long memberId, String refreshToken) {
+	public MemberToken regenerateToken(Long memberId, String refreshToken, String jwtHeader) {
 		String dbRefreshToken, newAccessToken;
+		String accessToken = jwtProvider.extractAccessToken(jwtHeader);
 		//refresh token 유효성 검증
 		jwtProvider.validateRefreshTokens(refreshToken);
 		
@@ -73,7 +74,7 @@ public class LoginService {
 		}
 		
 		//access token 재발급
-		newAccessToken = jwtProvider.regenerateAccessToken(memberId);
+		newAccessToken = jwtProvider.regenerateAccessToken(memberId, accessToken);
 		
 		return new MemberToken(newAccessToken, refreshToken);
 	}

@@ -88,6 +88,17 @@ public class JwtProvider {
 		}
 	}
 	
+	public String regenerateAccessToken(Long memberId, String accessToken) {
+		try {
+			parseToken(accessToken);
+		} catch (ExpiredJwtException e) {
+			// 신규 토큰 발급
+			return createToken(memberId, accessExpirationTime);
+		}
+		//기간 만료되지 않았다면 기존 토큰 그대로 리턴
+		return accessToken;
+	}
+	
 	private Jws<Claims> parseToken(final String token) {
 		return Jwts.parser()
 				.verifyWith(secretKey)
