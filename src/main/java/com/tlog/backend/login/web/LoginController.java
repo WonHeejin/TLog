@@ -67,7 +67,7 @@ public class LoginController {
 	@PostMapping("/token/{memberId}")
 	public ResponseEntity<LoginResponse> extendLogin(
 			@CookieValue("refresh-token") String refreshToken,
-			@RequestHeader("Authentication") String jwtHeader,
+			@RequestHeader("Authorization") String jwtHeader,
 			@PathVariable Long memberId) {
 		
 		MemberToken tokens = loginService.regenerateToken(memberId, refreshToken, jwtHeader);
