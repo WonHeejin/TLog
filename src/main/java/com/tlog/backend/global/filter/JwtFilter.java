@@ -29,9 +29,14 @@ public class JwtFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 
 		logger.info("jwt filter start");
+		String path = request.getRequestURI();
+		String method = request.getMethod();
+	    String contentType = request.getContentType();
+	    logger.info("Request URL path : {"+path+"}, Request content type: {"+contentType+"}");
 		//로그인이나 회원가입이면 필터 종료
-		if(request.getMethod().equals("POST")&&request.getRequestURI().startsWith("/member")
-				|| request.getMethod().equals("POST")&&request.getRequestURI().startsWith("/login")) {
+		if(method.equals("POST")&&path.startsWith("/member")
+				|| method.equals("POST")&&path.startsWith("/login")
+				|| method.equals("POST")&&path.startsWith("/token")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
