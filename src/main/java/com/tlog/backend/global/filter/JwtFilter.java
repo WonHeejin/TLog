@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtFilter extends OncePerRequestFilter{
 
 	private final JwtProvider jwtProvider;
-    public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -40,18 +39,12 @@ public class JwtFilter extends OncePerRequestFilter{
 		//토큰 검사
 		String jwtHeader = request.getHeader(HEADER_STRING);
 		
-		if(jwtHeader.isBlank() || jwtHeader == null) {
-			throw new InvalidJwtException(ExceptionCode.INVALID_ACCESS_TOKEN);
-		} else {
-			String accessToken = jwtHeader.replace(TOKEN_PREFIX, "");
-			jwtProvider.getMemberId(accessToken);
-			jwtProvider.validateTokens(accessToken);
-			
-			filterChain.doFilter(request, response);
-			return;
-			
-		}
-			
+		String accessToken = jwtProvider.extractAccessToken(jwtHeader);
+		
+		jwtProvider.validateTokens(accessToken);
+		
+		filterChain.doFilter(request, response);
+		return;
 		
 	}
 

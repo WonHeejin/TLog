@@ -27,6 +27,7 @@ public class JwtProvider {
 	private final SecretKey secretKey;
 	private final Long refreshExpirationTime;
 	private final Long accessExpirationTime;
+	public static final String TOKEN_PREFIX = "Bearer ";
 	
 	public JwtProvider(@Value("${jwt.secret}") final String stringKey,
 			@Value("${jwt.refresh_expiration_time}") final Long refreshExpirationTime,
@@ -58,10 +59,6 @@ public class JwtProvider {
 				.compact();
 	}
 	
-	public String regenerateAccessToken(Long memberId) {
-		return createToken(memberId, accessExpirationTime);
-	}
-	
 	public void validateTokens(final String token) {
 		try {
 			parseToken(token);
@@ -82,6 +79,14 @@ public class JwtProvider {
 		}
 	}
 	
+	public String extractAccessToken(String authHeader) {
+		
+		if(authHeader.isBlank() || authHeader == null) {
+			throw new InvalidJwtException(ExceptionCode.INVALID_ACCESS_TOKEN);
+		} else {
+			return authHeader.replace(TOKEN_PREFIX, "");
+		}
+	}
 	
 	private Jws<Claims> parseToken(final String token) {
 		return Jwts.parser()
