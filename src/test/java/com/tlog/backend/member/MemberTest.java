@@ -104,5 +104,40 @@ public class MemberTest {
 		
 	}
 	
+	@Test
+	@DisplayName("사용자 id로 salt값을 찾는다")
+	public void findByMemberId_test() {
+		//given
+		String email = "abc@googole.com";
+		String password = "1234";
+		String nickname = "foo";
+		MemberSignUpRequest req = MemberSignUpRequest
+				.testDataBuilder()
+				.test_email(email)
+				.test_nickname(nickname)
+				.test_password(password)
+				.test_checkPassword(password)
+				.build();
+		
+		Member entity = Member.builder()
+				.email(req.getEmail())
+				.password(req.getPassword())
+				.nickname(req.getNickname())
+				.role(Role.GUEST)
+				.build();
+		Member savedMember = repository.save(entity);
+		
+		String salt = savedMember.encPassword();
+		Salt saltEntity = Salt.builder()
+				.member(savedMember)
+				.salt(salt)
+				.build();
+		saltRepository.save(saltEntity);
+		
+		String result = saltRepository.findByMemberId(savedMember.getId()).get().getSalt();
+		//then
+		assertThat(result).isEqualTo(salt); 
+	}
+	
 	
 }
